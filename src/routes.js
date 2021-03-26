@@ -1,5 +1,5 @@
 const express = require('express');
-const routes = express();
+const routes = express.Router();
 
 const basePath = __dirname + '/views/';
 
