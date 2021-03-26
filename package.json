@@ -1,10 +1,13 @@
 {
   "name": "discover-jobscalc",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/server.js",
   "repository": "https://github.com/SadS4ndWiCh/discord-jobscalc.git",
   "author": "SadS4ndWiCh <caiocamargo007@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "dev": "nodemon ."
+  },
   "dependencies": {
     "ejs": "^3.1.6",
     "express": "^4.17.1"
