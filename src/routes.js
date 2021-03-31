@@ -11,6 +11,7 @@ const Profile = {
     'hours-per-day': 6,
     'days-per-week': 4,
     'vacation-per-year': 6,
+    'value-hour': 75
   },
 
   controllers: {
@@ -19,8 +20,27 @@ const Profile = {
     },
 
     update(req, res) {
+      // Dado atualizado do perfil
+      const data = req.body;
 
-    }
+      // Total de semanas em um ano
+      const weeksPerYear = 52;
+      // Remover as semanas de férias do ano para pegar quantas semanas tem em 1 mês
+      const weeksPerMonth = (weeksPerYear - data['vacation-per-year']) / 12; // Em média
+      // Total de horas trabalhadas na semana
+      const weekTotalHours = data['hours-per-day'] * data['days-per-week'];      
+
+      // Horas trabalhadas no mês
+      const monthlyTotalHours = weekTotalHours * weeksPerMonth;
+
+      // Qual será o valor da minha hora
+      data['value-hour'] = data['monthly-budget'] / monthlyTotalHours;
+
+      // Atualizar o data do perfil
+      Profile.data = data;
+
+      return res.redirect('/profile')
+    },
   }
 }
 
@@ -51,11 +71,12 @@ const Job = {
         return {
           ...job,
           reamining,
-          status
+          status,
+          budget: Profile.data['value-hour'] * job['total-hours']
         }
       });
 
-      return res.render(basePath + 'index', { jobs: updatedJobs });
+      return res.render(basePath + 'index', { jobs: updatedJobs, profile: Profile.data });
     },
 
     create(req, res) {
@@ -100,6 +121,8 @@ routes.post('/job', Job.controllers.save);
 
 
 routes.get('/job/edit', (req, res) => res.render(basePath + 'job-edit'));
+
 routes.get('/profile', Profile.controllers.index);
+routes.post('/profile', Profile.controllers.update);
 
 module.exports = routes;
