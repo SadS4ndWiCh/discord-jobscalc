@@ -126,6 +126,18 @@ const Job = {
       });
 
       return res.redirect(`/job/${id}`)
+    },
+
+    delete(req, res) {
+      const { id } = req.params;
+
+      // Um meio de excluir que usa o `.filter()` para filtrar
+      // apenas os que não são o que quer tirar... Ou seja,
+      // vai retornar apenas os elementos que não seja o que quer
+      // excluir, tendo assim, um Array novo sem o que deseja excluir
+      Job.data = Job.data.filter(job => Number(id) !== job.id);
+
+      return res.redirect('/')
     }
   },
 
@@ -156,6 +168,7 @@ routes.post('/job', Job.controllers.save);
 
 routes.get('/job/:id', Job.controllers.show);
 routes.post('/job/:id', Job.controllers.update);
+routes.post('/job/delete/:id', Job.controllers.delete);
 
 routes.get('/profile', Profile.controllers.index);
 routes.post('/profile', Profile.controllers.update);
