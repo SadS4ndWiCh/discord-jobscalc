@@ -19,7 +19,11 @@ server.set('views', __dirname + '/views/');
 // Usar os arquivos estáticos que estão na pasta public/
 server.use(express.static('public'));
 
+// Permitir que receba o Body na requisição
+server.use(express.urlencoded({ extended: true }));
+
 // Usar a rotas definidas no arquivo routes.js
 server.use(routes);
+
 
 server.listen(3000, () => console.log('Server listing in port 3000: http://localhost:3000/'));
