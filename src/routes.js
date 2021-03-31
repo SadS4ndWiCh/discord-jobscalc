@@ -72,7 +72,7 @@ const Job = {
           ...job,
           reamining,
           status,
-          budget: Profile.data['value-hour'] * job['total-hours']
+          budget: Job.services.calculateBudget(job, Profile.data['value-hour'])
         }
       });
 
@@ -94,6 +94,39 @@ const Job = {
 
       return res.redirect('/')
     },
+
+    show(req, res) {
+      const { id } = req.params;
+      const job = Job.data.find(job => Number(id) === job.id );
+
+      if(!job) return res.status(404).send('Job not found')
+
+      job.budget = Job.services.calculateBudget(job, Profile.data['value-hour']);
+
+      return res.render(basePath + 'job-edit', { job })
+    },
+
+    update(req, res) {
+      const { id } = req.params;
+      const job = Job.data.find(job => Number(id) === job.id );
+
+      if(!job) return res.status(404).send('Job not found')
+
+      const updatedJob = {
+        ...job,
+        name: req.body.name || job.name,
+        'total-hours': req.body['total-hours'] || job['total-hours'],
+        'daily-hours': req.body['daily-hours'] || job['daily-hours'],
+      }
+
+      Job.data = Job.data.map(job => {
+        if(job.id === Number(id)) job = updatedJob;
+
+        return job
+      });
+
+      return res.redirect(`/job/${id}`)
+    }
   },
 
   services: {
@@ -110,7 +143,9 @@ const Job = {
       const dayDiff = Math.floor(timeDiffInMs / dayInMs);
 
       return dayDiff
-    }
+    },
+
+    calculateBudget: (job, valueHour) => valueHour * job['total-hours']
   }
 }
 
@@ -119,8 +154,8 @@ routes.get('/', Job.controllers.index);
 routes.get('/job', Job.controllers.create);
 routes.post('/job', Job.controllers.save);
 
-
-routes.get('/job/edit', (req, res) => res.render(basePath + 'job-edit'));
+routes.get('/job/:id', Job.controllers.show);
+routes.post('/job/:id', Job.controllers.update);
 
 routes.get('/profile', Profile.controllers.index);
 routes.post('/profile', Profile.controllers.update);
