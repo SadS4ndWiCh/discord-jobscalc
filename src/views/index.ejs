@@ -35,9 +35,9 @@
             Você tem 2 horas livres no seu dia
           </span>
           <a href="/profile" id="avatar-profile">
-            <p>Jakeliny <span>Ver perfil</span></p>
+            <p><%= profile.name %>  <span>Ver perfil</span></p>
             <img
-              src="https://avatars.githubusercontent.com/u/17316392?s=460&u=6912a91a70bc89745a2079fdcdad3bc3ce370f13&v=4"
+              src="<%= profile.avatar %> "
             />
           </a>
         </section>
@@ -91,7 +91,7 @@
               </div>
               <div class="amount column">
                 <span>Valor</span>
-                <p>R$ 4500,00</p>
+                <p>R$ <%= job.budget.toFixed(2).replace('.', ',') %> </p>
               </div>
               <div class="status badge column">
                 <%= job.status === 'done' ? 'Encerrado' : 'Em andamento' %> 
