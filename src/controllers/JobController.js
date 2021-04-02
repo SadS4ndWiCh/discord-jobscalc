@@ -3,21 +3,21 @@ const Job = require('../models/Job');
 const Profile = require('../models/Profile');
 
 // Utils
-const jobUtils = require('../utils/jobUtils');
+const JobUtils = require('../utils/JobUtils');
 
 module.exports = {
   index(req, res) {
     const profile = Profile.get();
 
     const updatedJobs = Job.get().map(job => {
-      const reamining = jobUtils.reaminingDays(job);
+      const reamining = JobUtils.reaminingDays(job);
       const status = reamining <= 0 ? 'done' : 'progress';
 
       return {
         ...job,
         reamining,
         status,
-        budget: jobUtils.calculateBudget(job, profile['value-hour'])
+        budget: JobUtils.calculateBudget(job, profile['value-hour'])
       }
     });
 
@@ -44,7 +44,7 @@ module.exports = {
     
     const profile = Profile.get();
 
-    job.budget = jobUtils.calculateBudget(job, profile['value-hour']);
+    job.budget = JobUtils.calculateBudget(job, profile['value-hour']);
 
     return res.render('job-edit', { job })
   },
