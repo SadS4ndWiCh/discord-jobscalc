@@ -6,24 +6,6 @@ const Profile = require('../models/Profile');
 const JobUtils = require('../utils/JobUtils');
 
 module.exports = {
-  index(req, res) {
-    const profile = Profile.get();
-
-    const updatedJobs = Job.get().map(job => {
-      const reamining = JobUtils.reaminingDays(job);
-      const status = reamining <= 0 ? 'done' : 'progress';
-
-      return {
-        ...job,
-        reamining,
-        status,
-        budget: JobUtils.calculateBudget(job, profile['value-hour'])
-      }
-    });
-
-    return res.render('index', { jobs: updatedJobs, profile });
-  },
-
   create(req, res) {
     return res.render('job')
   },
