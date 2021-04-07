@@ -35,3 +35,8 @@ async function getAll(sql) {
   return results
 }
 
+module.exports = {
+  exec,
+  getOne,
+  getAll,
+}
