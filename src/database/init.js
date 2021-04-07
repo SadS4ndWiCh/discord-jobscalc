@@ -23,6 +23,26 @@ async function initDatabase() {
       created_at DATETIME
     )
   `);
+
+  await Database.exec(`
+    INSERT INTO profile (
+      name,
+      avatar,
+      monthly_budget,
+      days_per_week,
+      hours_per_day,
+      vacation_per_year,
+      value_hour
+    ) VALUES (
+      "SadS4ndWiCh",
+      "https://github.com/SadS4ndWiCh.png", 
+      4500,
+      6,
+      4,
+      6,
+      75
+    )
+  `);
 }
 
 initDatabase();
