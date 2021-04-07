@@ -27,14 +27,6 @@ module.exports = {
         ${Date.now()}
       )
     `);
-
-    /* data.push({
-      id: lastId + 1,
-      name: newJob.name,
-      'daily-hours': newJob['daily-hours'],
-      'total-hours': newJob['total-hours'],
-      created_at: Date.now(), 
-    }); */
   },
 
   async update(jobId, newJobData) {
