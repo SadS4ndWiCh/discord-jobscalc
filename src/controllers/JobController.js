@@ -10,40 +10,41 @@ module.exports = {
     return res.render('job')
   },
 
-  save(req, res) {
+  async save(req, res) {
     const newJob = req.body;
 
-    Job.create(newJob);
+    await Job.create(newJob);
 
     return res.redirect('/')
   },
 
-  show(req, res) {
+  async show(req, res) {
     const { id } = req.params;
-    const job = Job.get().find(job => Number(id) === job.id );
+    const jobs = await Job.get();
+    const job = jobs.find(job => Number(id) === job.id );
 
     if(!job) return res.status(404).send('Job not found')
     
-    const profile = Profile.get();
+    const profile = await Profile.get();
 
     job.budget = JobUtils.calculateBudget(job, profile['value-hour']);
 
     return res.render('job-edit', { job })
   },
 
-  update(req, res) {
+  async update(req, res) {
     const { id } = req.params;
     const newJobData = req.body;
 
-    Job.update(id, newJobData);
+    await Job.update(id, newJobData);
 
     return res.redirect(`/job/${id}`)
   },
 
-  delete(req, res) {
+  async delete(req, res) {
     const { id } = req.params;
 
-    Job.delete(id);
+    await Job.delete(id);
 
     return res.redirect('/')
   }
